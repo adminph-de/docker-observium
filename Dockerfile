@@ -14,11 +14,11 @@ ENV DEFAULTS_DIR /opt/config/defaults
 ENV APACHE_CONFIG_DIR /opt/config/apache2
 #Certificate Subject
 ENV CERT_SUBJ /C=DK/ST=Valby/L=Copenhagen/O=Observium/OU=CCoE/CN=observium
-##Necessary to auto configure: tzdata
-ENV DEBIAN_FRONTEND noninteractive
-
+##GIT Repo for default settings
 ENV GIT_DEFUALT_REPO https://github.com/adminph-de/docker-observium.git
 ENV GIT_BRANCH defaults
+##Necessary to auto configure: tzdata
+ENV DEBIAN_FRONTEND noninteractive
 
 ##Install Dependencies
 RUN apt-get -y update && \
