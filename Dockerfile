@@ -17,6 +17,9 @@ ENV CERT_SUBJ /C=DK/ST=Valby/L=Copenhagen/O=Observium/OU=CCoE/CN=observium
 ##Necessary to auto configure: tzdata
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV GIT_DEFUALT_REPO https://github.com/adminph-de/docker-observium.git
+ENV GIT_BRANCH defaults
+
 ##Install Dependencies
 RUN apt-get -y update && \
     apt-get install -y \
@@ -63,19 +66,17 @@ RUN mkdir -p \
      ${OBERSERIUM_CONFIG_DIR}/rrd
 RUN chmod 755 ${OBERSERIUM_CONFIG_DIR}/logs && ln -s ${OBERSERIUM_CONFIG_DIR}/logs ${OBERSERIUM_INSTALL_DIR}/logs && \
     chmod 755 ${OBERSERIUM_CONFIG_DIR}/rrd && chown www-data:www-data ${OBERSERIUM_CONFIG_DIR}/rrd && ln -s ${OBERSERIUM_CONFIG_DIR}/rrd ${OBERSERIUM_INSTALL_DIR}/rrd
-ADD *.png  ${DEFAULTS_DIR}/
-ADD *.conf ${DEFAULTS_DIR}/
-ADD *.php  ${DEFAULTS_DIR}/
+RUN git clone -b ${GIT_BRANCH} ${GIT_DEFUALT_REPO} ${DEFAULTS_DIR} && ls -lha ${DEFAULTS_DIR}
 RUN cp ${OBERSERIUM_INSTALL_DIR}/config.php.default ${OBERSERIUM_CONFIG_DIR}/config.php && \
     sed -i "s/USERNAME/${MYSQL_OBSERVIUM_USERNAME}/" ${OBERSERIUM_CONFIG_DIR}/config.php && \
     sed -i "s/PASSWORD/${MYSQL_OBSERVIUM_PASSWORD}/" ${OBERSERIUM_CONFIG_DIR}/config.php && \
-    cp -nf  ${OBERSERIUM_CONFIG_DIR}/config.php ${DEFAULTS_DIR}/. && \
+    cp -nf ${OBERSERIUM_CONFIG_DIR}/config.php ${DEFAULTS_DIR}/. && \
     ln -s  ${OBERSERIUM_CONFIG_DIR}/config.php ${OBERSERIUM_INSTALL_DIR}/config.php
 RUN rm html/images/login-hamster-large.png && rm html/images/brand-observium.png
-ADD login-large.png  ${OBERSERIUM_CONFIG_DIR}/images/login-large.png
-RUN ln -s  ${OBERSERIUM_CONFIG_DIR}/images/login-large.png html/images/login-hamster-large.png
-ADD brand.png ${OBERSERIUM_CONFIG_DIR}/images/brand.png
-RUN ln -s ${OBERSERIUM_CONFIG_DIR}/images/brand.png html/images/brand-observium.png
+RUN cp -nf ${DEFAULTS_DIR}/login-large.png ${OBERSERIUM_CONFIG_DIR}/images/login-large.png && \
+    ln -s  ${OBERSERIUM_CONFIG_DIR}/images/login-large.png html/images/login-hamster-large.png
+RUN cp -nf ${DEFAULTS_DIR}/brand.png ${OBERSERIUM_CONFIG_DIR}/images/brand.png  && \
+    ln -s ${OBERSERIUM_CONFIG_DIR}/images/brand.png html/images/brand-observium.png
 
 ##Apache2 Configuration
 #Create Self-Signed-Certificate (SSL)
@@ -88,9 +89,9 @@ RUN /usr/bin/openssl req -new -newkey rsa:2048 -nodes -out observium.csr -keyout
 #Enable default (http and https) Apache2 site for observium
 WORKDIR /etc/apache2/sites-available
 RUN rm 000-default.conf
-ADD *.conf ${APACHE_CONFIG_DIR}/sites-available/
-RUN ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default.conf 000-default.conf
-RUN ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default-ssl.conf 000-default-ssl.conf
+RUN cp ${DEFAULTS_DIR}/*.conf ${APACHE_CONFIG_DIR}/sites-available/. && \
+    ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default.conf 000-default.conf && \
+    ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default-ssl.conf 000-default-ssl.conf
 RUN a2ensite 000-default-ssl.conf
 RUN a2dismod mpm_event && a2enmod mpm_prefork && a2enmod php7.2 && a2enmod ssl && a2enmod rewrite
 
@@ -107,7 +108,7 @@ RUN service mysql start && service mysql status && \
     ./adduser.php demo demo 10
 
 ##Add Entrypoint bash script
-ADD entrypoint.sh /usr/bin
+RUN cp ${DEFAULTS_DIR}/entrypoint.sh /usr/bin/.
 RUN chmod 755 /usr/bin/entrypoint.sh
 
 EXPOSE 80 443 8080 8443
