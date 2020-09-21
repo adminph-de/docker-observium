@@ -1,0 +1,115 @@
+FROM ubuntu:18.04
+
+#MySQL User and Password
+ENV MYSQL_OBSERVIUM_USERNAME observium
+ENV MYSQL_OBSERVIUM_PASSWORD ZK%Oeg@f6!0h
+#General Install Dir
+ENV OBERSERIUM_INSTALL_DIR /opt/observium
+#Configuration Files
+ENV OBERSERIUM_CONFIG_DIR /opt/config/observium
+#Defaults
+ENV DEFAULTS_DIR /opt/config/defaults
+##Apache2
+#Configuration Files
+ENV APACHE_CONFIG_DIR /opt/config/apache2
+#Certificate Subject
+ENV CERT_SUBJ /C=DK/ST=Valby/L=Copenhagen/O=Observium/OU=CCoE/CN=observium
+##Necessary to auto configure: tzdata
+ENV DEBIAN_FRONTEND noninteractive
+
+##Install Dependencies
+RUN apt-get -y update && \
+    apt-get install -y \
+    curl \
+    wget \ 
+    git \
+    openssl \
+    iputils-ping \
+    libapache2-mod-php7.2 \
+    php7.2-cli \
+    php7.2-mysql \
+    php7.2-mysqli \
+    php7.2-gd \
+    php7.2-json \
+    php-pear \
+    snmp \
+    fping \
+    mysql-server \
+    mysql-client \
+    python-mysqldb  \
+    rrdtool \
+    subversion \
+    whois \
+    mtr-tiny \
+    ipmitool graphviz imagemagick  \
+    apache2 \
+    libvirt-bin
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+## Observium Installation
+#Download and unpack Observium Community Edition
+RUN mkdir -p ${OBERSERIUM_INSTALL_DIR}
+WORKDIR /opt
+RUN wget http://www.observium.org/observium-community-latest.tar.gz --no-check-certificate && \
+    tar zxvf observium-community-latest.tar.gz
+#Customize Observium Installation
+WORKDIR ${OBERSERIUM_INSTALL_DIR}
+RUN mkdir -p \
+     ${OBERSERIUM_CONFIG_DIR} \
+     ${OBERSERIUM_CONFIG_DIR}/images \
+     ${APACHE_CONFIG_DIR}/sites-available \
+     ${DEFAULTS_DIR} \
+     ${OBERSERIUM_CONFIG_DIR}/logs \
+     ${OBERSERIUM_CONFIG_DIR}/rrd
+RUN chmod 755 ${OBERSERIUM_CONFIG_DIR}/logs && ln -s ${OBERSERIUM_CONFIG_DIR}/logs ${OBERSERIUM_INSTALL_DIR}/logs && \
+    chmod 755 ${OBERSERIUM_CONFIG_DIR}/rrd && chown www-data:www-data ${OBERSERIUM_CONFIG_DIR}/rrd && ln -s ${OBERSERIUM_CONFIG_DIR}/rrd ${OBERSERIUM_INSTALL_DIR}/rrd
+ADD *.png  ${DEFAULTS_DIR}/
+ADD *.conf ${DEFAULTS_DIR}/
+ADD *.php  ${DEFAULTS_DIR}/
+RUN cp ${OBERSERIUM_INSTALL_DIR}/config.php.default ${OBERSERIUM_CONFIG_DIR}/config.php && \
+    sed -i "s/USERNAME/${MYSQL_OBSERVIUM_USERNAME}/" ${OBERSERIUM_CONFIG_DIR}/config.php && \
+    sed -i "s/PASSWORD/${MYSQL_OBSERVIUM_PASSWORD}/" ${OBERSERIUM_CONFIG_DIR}/config.php && \
+    cp -nf  ${OBERSERIUM_CONFIG_DIR}/config.php ${DEFAULTS_DIR}/. && \
+    ln -s  ${OBERSERIUM_CONFIG_DIR}/config.php ${OBERSERIUM_INSTALL_DIR}/config.php
+RUN rm html/images/login-hamster-large.png && rm html/images/brand-observium.png
+ADD login-large.png  ${OBERSERIUM_CONFIG_DIR}/images/login-large.png
+RUN ln -s  ${OBERSERIUM_CONFIG_DIR}/images/login-large.png html/images/login-hamster-large.png
+ADD brand.png ${OBERSERIUM_CONFIG_DIR}/images/brand.png
+RUN ln -s ${OBERSERIUM_CONFIG_DIR}/images/brand.png html/images/brand-observium.png
+
+##Apache2 Configuration
+#Create Self-Signed-Certificate (SSL)
+WORKDIR /tmp
+RUN /usr/bin/openssl req -new -newkey rsa:2048 -nodes -out observium.csr -keyout observium.key -subj "${CERT_SUBJ}" && \
+    /usr/bin/openssl x509 -in observium.csr -out observium.cert -req -signkey observium.key -days 3650 && \
+    cp observium.cert /etc/ssl/certs/observium.crt && \
+    cp observium.key /etc/ssl/private/observium.key && \
+    rm observium.*
+#Enable default (http and https) Apache2 site for observium
+WORKDIR /etc/apache2/sites-available
+RUN rm 000-default.conf
+ADD *.conf ${APACHE_CONFIG_DIR}/sites-available/
+RUN ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default.conf 000-default.conf
+RUN ln -s  ${APACHE_CONFIG_DIR}/sites-available/000-default-ssl.conf 000-default-ssl.conf
+RUN a2ensite 000-default-ssl.conf
+RUN a2dismod mpm_event && a2enmod mpm_prefork && a2enmod php7.2 && a2enmod ssl && a2enmod rewrite
+
+##MySQL Database (local)
+RUN usermod -d /var/lib/mysql/ mysql
+WORKDIR ${OBERSERIUM_INSTALL_DIR}
+RUN service mysql start && service mysql status && \
+    MYSQL_ROOT_PASSWORD=`cat /etc/mysql/debian.cnf | awk '/password/ {print}' | sed 's/[[:space:]]//g' | sed 's/[password=]//g' | tail -n 1` && \
+    mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE observium DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" && \
+    mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER 'observium'@'localhost' identified by 'ZK%Oeg@f6!0h';" && \
+    mysql -u root -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL ON observium.* TO 'observium'@'localhost';" && \
+    mysql -u root -p$MYSQL_ROOT_PASSWORD -e "SHOW DATABASES;" && \
+    ./discovery.php -u && \
+    ./adduser.php demo demo 10
+
+##Add Entrypoint bash script
+ADD entrypoint.sh /usr/bin
+RUN chmod 755 /usr/bin/entrypoint.sh
+
+EXPOSE 80 443 8080 8443
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
