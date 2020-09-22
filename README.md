@@ -18,7 +18,7 @@
     <img src="images/logo.png" alt="Code Snipes" width="35%" height="35%">
   </a>
   <p align="left">
-    Obersium (Community Edition) is a Python library for dealing with word pluralization.
+    Obersium (Community Edition) Network monitoring with intuition.
     <br />
     <a href="https://github.com/adminph-de/docker-observium/issues">Bug Report</a>
     ·
@@ -40,11 +40,13 @@
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install Obersium (Community Edition).
+Pull the Docker container to install Obersium (Community Edition).
 
 ```bash
-pip install Obersium (Community Edition)
+docker pull codesnipes/observium:latest
 ```
+
+Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) to see the different tags.
 
 ## Usage
 
@@ -101,5 +103,5 @@ Project Link: [https://github.com/adminph-de/docker-observium](https://github.co
 [license-url]: https://github.com/adminph-de/docker-observium/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/patrickhayo/?locale=en_US
-[product-screenshot]: images/screenshot.png
+[gravatar-url]: https://secure.gravatar.com/avatar/7ff4a974bdce7e98ec072b9cb354f64c
 [product-screenshot-run]: images/screenshot_run.png
