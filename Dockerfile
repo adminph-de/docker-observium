@@ -98,7 +98,8 @@ RUN a2dismod mpm_event && a2enmod mpm_prefork && a2enmod php7.2 && a2enmod ssl &
 ##MySQL Database (local)
 RUN usermod -d /var/lib/mysql/ mysql
 WORKDIR ${OBERSERIUM_INSTALL_DIR}
-RUN service mysql start && service mysql status && \
+
+RUN find /var/lib/mysql -exec touch {} \; && service mysql start && service mysql status && \
     MYSQL_ROOT_PASSWORD=`cat /etc/mysql/debian.cnf | awk '/password/ {print}' | sed 's/[[:space:]]//g' | sed 's/[password=]//g' | tail -n 1` && \
     mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE observium DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" && \
     mysql -u root -p$MYSQL_ROOT_PASSWORD -e "CREATE USER 'observium'@'localhost' identified by 'ZK%Oeg@f6!0h';" && \
