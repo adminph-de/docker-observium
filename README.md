@@ -32,6 +32,7 @@
 - Obersium (Community Edition)
   - [Prerequisities](#Prerequisities)
   - [Building](#Building)
+  - [Pulling](#Pulling)
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [License](#license)
@@ -68,6 +69,15 @@ docker build -t observium:latest .
 * `CERT_SUBJ` -  SSL Certificat Subjects
 
 All Variables have default values you can use and heck the Dockerfile for the defaults.
+
+## Pulling
+
+If you don't need or like to change settings in the ``Dockerfile``
+you can simply pull the Docker image from my DockerHub Repository 
+to install Obersium (Community Edition).
+```bash
+docker pull codesnipes/observium:latest
+```
 
 
 ## Usage
