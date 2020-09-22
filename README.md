@@ -30,8 +30,8 @@
 ## Content
 
 - Obersium (Community Edition)
-  - [Content](#content)
-  - [Installation](#installation)
+  - [Prerequisities](#Prerequisities)
+  - [Building](#Building)
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [License](#license)
@@ -39,7 +39,16 @@
   - [Acknowledgements](#acknowledgements)
 
 
-## Installation
+### Prerequisities
+
+In order to run this container you'll need docker installed.
+
+* [Windows](https://docs.docker.com/windows/started)
+* [OS X](https://docs.docker.com/mac/started/)
+* [Linux](https://docs.docker.com/linux/started/)
+
+
+## Building
 
 Create the container image out of the ``Dockerfile`` in this Repository
 
@@ -52,13 +61,11 @@ Run the build of the container:
 docker build -t observium:latest .
 ```
 
-If you don't need or like to change settings in the ``Dockerfile``
-you can simply pull the Docker image from my [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) 
-to install Obersium (Community Edition).
-```bash
-docker pull codesnipes/observium:latest
-```
-Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) to see the different tags.
+#### Environment Variables
+
+* `MYSQL_OBSERVIUM_USERNAME` -  MySQL Username (default: observium)
+* `MYSQL_OBSERVIUM_PASSWORD` -  MySQL User Password (default: ZK%Oeg@f6!0h)
+* `CERT_SUBJ` -  SSL Certificat Subjects (default: /C=DK/ST=Valby/L=Copenhagen/O=Observium/OU=CCoE/CN=observium)
 
 
 ## Usage
