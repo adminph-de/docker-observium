@@ -38,6 +38,7 @@
   - [Contact](#contact)
   - [Acknowledgements](#acknowledgements)
 
+
 ## Installation
 
 Create the container image out of the ``Dockerfile`` in this Repository
@@ -59,9 +60,10 @@ docker pull codesnipes/observium:latest
 ```
 Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) to see the different tags.
 
+
 ## Usage
 
-After a sucessfull creation or pulling of the image, you can run the container
+After a sucessfull creation or pulling of the image, you can run the container.
 
 ### Volumes:
 You might like to keep the configuration in a docker volume to persist your settings:
@@ -90,6 +92,7 @@ https://localhost:8443
 - **Password:** Demo
 
 Find all details at [codesnipes/observium](https://hub.docker.com/r/codesnipes/observium) (DockerHub)
+and find a detailed description of the image settings.
 
 
 ## Contributing
@@ -100,6 +103,7 @@ Contributions are what make the open source community such an amazing place to b
 3. Commit your Changes `git commit -m 'Add some AmazingFeature'`
 4. Push to the Branch `git push origin feature/AmazingFeature`
 5. Open a Pull Request
+
 
 ## License
 
@@ -113,7 +117,6 @@ Project Link: [https://github.com/adminph-de/docker-observium](https://github.co
 [Patrick Hayo](patrick.hayo@flsmidth.com)
 
 [![N00ky2010](https://img.shields.io/twitter/follow/N00ky2010)](https://www.twitter.com/N00ky2010)
-
 
 
 ## Acknowledgements
