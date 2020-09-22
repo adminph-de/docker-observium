@@ -66,9 +66,9 @@ After creating or pulling the image, you can run the container
 ### Volumes:
 You might like to keep the configuration in a docker volume to persist your settings:
 
-/opt/config/obsobservium
-/opt/config/apache2
-/var/lib/mysql
+- /opt/config/obsobservium
+- /opt/config/apache2
+- /var/lib/mysql
 
 ### Example:
 ```python
