@@ -61,7 +61,7 @@ Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) 
 
 ## Usage
 
-After creating or pulling the image, you can run the container
+After a sucessfull creation or pulling of the image, you can run the container
 
 ### Volumes:
 You might like to keep the configuration in a docker volume to persist your settings:
@@ -88,6 +88,8 @@ https://localhost:8443
 
 - **User:** Demo
 - **Password:** Demo
+
+Find all details at [codesnipes/observium](https://hub.docker.com/r/codesnipes/observium) (DockerHub)
 
 
 ## Contributing
