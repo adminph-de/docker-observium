@@ -52,7 +52,7 @@ docker build -t observium:latest .
 ```
 
 If you don't need or like to change settings in the ``Dockerfile``
-you can simply pull the Docker image from my DockerHub Repository 
+you can simply pull the Docker image from my [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) 
 to install Obersium (Community Edition).
 ```bash
 docker pull codesnipes/observium:latest
@@ -61,12 +61,23 @@ Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) 
 
 ## Usage
 
-```python
-import Obersium (Community Edition)
+After creating or pulling the image, you can run the container
 
-Obersium (Community Edition).pluralize('word') # returns 'words'
-Obersium (Community Edition).pluralize('goose') # returns 'geese'
-Obersium (Community Edition).singularize('phenomena') # returns 'phenomenon'
+### Volumes:
+You might like to keep the configuration in a docker volume to persist your settings:
+
+/opt/config/obsobservium
+/opt/config/apache2
+/var/lib/mysql
+
+### Example:
+```python
+docker container run --name observium \
+    -p 8443:443 \
+    -v obs_config:/opt/config/obsobservium \
+    -v obs_apache:/opt/config/apache2 \
+    -v obs_mysql:/var/lib/mysql \
+    observium:latest
 ```
 
 ## Contributing
