@@ -63,9 +63,11 @@ docker build -t observium:latest .
 
 #### Environment Variables
 
-* `MYSQL_OBSERVIUM_USERNAME` -  MySQL Username (default: observium)
-* `MYSQL_OBSERVIUM_PASSWORD` -  MySQL User Password (default: ZK%Oeg@f6!0h)
-* `CERT_SUBJ` -  SSL Certificat Subjects (default: /C=DK/ST=Valby/L=Copenhagen/O=Observium/OU=CCoE/CN=observium)
+* `MYSQL_OBSERVIUM_USERNAME` -  MySQL Username
+* `MYSQL_OBSERVIUM_PASSWORD` -  MySQL User Password
+* `CERT_SUBJ` -  SSL Certificat Subjects
+
+All Variables have default values you can use and heck the Dockerfile for the defaults.
 
 
 ## Usage
