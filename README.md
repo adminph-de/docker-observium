@@ -71,7 +71,7 @@ You might like to keep the configuration in a docker volume to persist your sett
 - /var/lib/mysql
 
 ### Example:
-```python
+```bash
 docker container run --name observium \
     -p 8443:443 \
     -v obs_config:/opt/config/obsobservium \
@@ -79,6 +79,16 @@ docker container run --name observium \
     -v obs_mysql:/var/lib/mysql \
     observium:latest
 ```
+
+If the container is running, you can access the Observium Webinterface by:
+
+```html
+https://localhost:8443
+````
+
+- **User:** Demo
+- **Password:** Demo
+
 
 ## Contributing
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
