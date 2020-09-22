@@ -40,12 +40,23 @@
 
 ## Installation
 
-Pull the Docker container to install Obersium (Community Edition).
+Create the container image out of the ``Dockerfile`` in this Repository
 
+Clone the Repository:
+```bash
+git clone -b master https://github.com/adminph-de/docker-observium.git 
+```
+Run the build of the container:
+```bash
+docker build -t observium:latest .
+```
+
+If you don't need or like to change settings in the ``Dockerfile``
+you can simply pull the Docker image from my DockerHub Repository 
+to install Obersium (Community Edition).
 ```bash
 docker pull codesnipes/observium:latest
 ```
-
 Check the [DockerHub Repository](https://hub.docker.com/r/codesnipes/observium) to see the different tags.
 
 ## Usage
