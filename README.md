@@ -19,9 +19,9 @@
   </a>
   <p align="left">
     <a href="https://www.observium.org/">Observium</a> (Community Edition) Network monitoring with intuition.
-    <br /><br />
+    <br />
     Observium is a low-maintenance auto-discovering network monitoring platform supporting a wide range of device types, platforms and operating systems including Cisco, Windows, Linux, HP, Juniper, Dell, FreeBSD, Brocade, Netscaler, NetApp and many more. Observium focuses on providing a beautiful and powerful yet simple and intuitive interface to the health and status of your network.
-    <br /><br />
+    <br />
     Professionally developed and maintained by a team of experienced network engineers and systems administrators, Observium is a platform designed and built by its users.
     <br /><br />
     <a href="https://github.com/adminph-de/docker-observium/issues">Bug Report</a>
