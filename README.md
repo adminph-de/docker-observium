@@ -15,7 +15,7 @@
 <br />
 <p align="left">
   <a href="https://github.com/adminph-de/docker-observium">
-    <img src="images/logo.png" alt="Code Snipes" width="35%" height="35%">
+    <img src="https://raw.githubusercontent.com/adminph-de/docker-observium/master/images/logo.png" alt="Code Snipes" width="35%" height="35%">
   </a>
   <p align="left">
     <a href="https://www.observium.org/">Observium</a> (Community Edition) Network monitoring with intuition.
