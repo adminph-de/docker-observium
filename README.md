@@ -3,7 +3,7 @@
 *** Obersium (Community Edition),adminph-de, docker-observium, N00ky2010, patrick.hayo@flsmidth.com
 -->
 
-# Obersium (Community Edition)
+# Observium (Community Edition)
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -29,7 +29,7 @@
 
 ## Content
 
-- Obersium (Community Edition)
+- Observium (Community Edition)
   - [Prerequisities](#Prerequisities)
   - [Building](#Building)
   - [Pulling](#Pulling)
