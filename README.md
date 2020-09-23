@@ -51,7 +51,7 @@ In order to run this container you'll need docker installed.
 
 ## Building
 
-Create the container image out of the ``Dockerfile`` in this Repository
+Create the container image with the ``Dockerfile`` in this Repository
 
 Clone the Repository:
 ```bash
@@ -68,13 +68,12 @@ docker build -t observium:latest .
 * `MYSQL_OBSERVIUM_PASSWORD` -  MySQL User Password
 * `CERT_SUBJ` -  SSL Certificat Subjects
 
-All Variables have default values you can use and heck the Dockerfile for the defaults.
+All Variables are set to default values, you can use the defaults or check the Dockerfile and set your own.
 
 ## Pulling
 
 If you don't need or like to change settings in the ``Dockerfile``
-you can simply pull the Docker image from my DockerHub Repository 
-to install Obersium (Community Edition).
+you can simply pull the Docker image from my DockerHub Repository.
 ```bash
 docker pull codesnipes/observium:latest
 ```
@@ -85,7 +84,7 @@ docker pull codesnipes/observium:latest
 After a sucessfull creation or pulling of the image, you can run the container.
 
 ### Volumes:
-You might like to keep the configuration in a docker volume to persist your settings:
+You might like to keep the configuration in a docker volume to keep your settings:
 
 - /opt/config/obsobservium
 - /opt/config/apache2
